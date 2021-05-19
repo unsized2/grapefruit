@@ -1,0 +1,11 @@
+{
+    "name": "unsized/grapefruit",
+    "description": "controller inputs to 2 dimensional array for input into a flat html template",
+    "license": "MIT",
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-4": {"Unsized\\Grapefruit\\": "vendor/unsized/grapefruit/src/"}
+    },
+
+    "require": {}
+}
