@@ -1,11 +1,25 @@
 {
     "name": "unsized/grapefruit",
-    "description": "controller inputs to 2 dimensional array for input into a flat html template",
-    "license": "MIT",
-    "minimum-stability": "dev",
+    "description": "Controller class to map user inputs to a full web page view template.",
+    "license":      "MIT",
+    "type":         "library",
+    "authors": [
+            {
+                "name":     "Clive Turner",
+                "email":    "clive@unsized.uk",
+                "homepage": "https://unsized.uk",
+                "role":     "Developer"
+            }
+        ],
+
     "autoload": {
-        "psr-4": {"Unsized\\Grapefruit\\": "vendor/unsized/grapefruit/src/"}
+        "psr-4": {
+            "unsized\\grapefruit\\": "src/"
+        }
     },
 
-    "require": {}
+    "minimum-stability": "dev",
+    "require": {
+        "php": "^7|^8"
+    }
 }
