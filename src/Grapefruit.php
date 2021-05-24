@@ -12,7 +12,7 @@ require ('_raw.php');
 
 //rewrite backstack as a class and 'nav html components';
 require ('_backstack.php'); //records browser history for creation of back and forward urls.
-
+require ('_url_helper.php');
 
 class Grapefruit
 {
