@@ -36,7 +36,7 @@ function __construct ()
 
 function getCredentials( $filename, $third_party) // API credential loader
 {
-  include_once (ROOT.'/credentials/'.$filename.'.php');
+  include_once (CREDENTIALS.'/'.$filename.'.php');
   $credentials = $third_party();
   return $credentials;
   }
