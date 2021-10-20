@@ -73,28 +73,6 @@ function fwd_url()
 return $_SESSION['fwd'][0];
 }
 
-//The default Page Title is the last url segment
-function nav_title($seg='')
-{
-//$seg = explode('/', parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) );
-$title=false;
-$segment = explode('/', parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) );
-
-if (!is_numeric($seg)){
-  $title = array_pop($segment);
-  }
-elseif(isset($segment[$seg]) ){
-  $title = $segment[$seg];
-  }
-
-//String prep:  hyphen to space |  uc_first
-if ($title){
-  $title= ucfirst(str_replace(['-','_'], ' ', urldecode($title)));
-//  $title=htmlentities($title);
-  }
-return $title;
-}
-
 
 //**************************For Testing only below here***************************************//
 //**********Create html in page **************************************************************//
