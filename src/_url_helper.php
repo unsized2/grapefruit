@@ -5,6 +5,13 @@ function get_url_segments()
   return  ( explode ( '/', parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) ) );
   }
 
+  function get_url_segment($seg)
+  {
+    $segs=get_url_segments();
+    return $segs[$seg];
+    }
+
+
 function subdomain_is($name='test'){
       $test=false;
       $subdomain = join('.', explode('.', $_SERVER['HTTP_HOST'], -2));
@@ -12,6 +19,26 @@ function subdomain_is($name='test'){
         $test='true';
         }
       return $test;
+  }
+
+  //date helper
+  function getDateFromUrl($p='3')
+  {
+  $sql_date=false;
+  //assumed format is dd/mm/yyyy
+  $url=get_url_segments();
+  $j = (int)$url[$p];//day
+  $n = (int)$url[$p+1];//month
+  $Y = (int)$url[$p+2]; //year
+
+  $i_format= 'j-n-Y';
+  //echo '<p>Big</p>';
+  $date=$j.'-'.$n.'-'.$Y;
+  //convert to sql format
+  if ($d = DateTime::createFromFormat($i_format, $date)){
+    $sql_date = $d->format('Y-m-d');
+    }
+  return $sql_date;
   }
 
 //gets scriptname with the .ext removed

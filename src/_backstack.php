@@ -2,9 +2,7 @@
 //function to record last internal urls visited so that forward and back buttons work.
 //based on history, not hierarchy.
 //records pages and sub url, but not query string.
-
 // session best practices https://www.phparch.com/2018/01/php-sessions-in-depth/
-
 
 
 function back_stack($back_max=5)
