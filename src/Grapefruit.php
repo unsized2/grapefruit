@@ -4,7 +4,17 @@
 // hugely simplified!  More robust!
 // additioanl modules eg third party login are optional.
 
-/******** grapefruit is a model - its output is data for the components****
+// grapefruit supplies DYNAMIC data to web COMPONENTS
+// grapefruit segment names match the webcomponent names
+// Class role is to prepare data for direct injection into webcomponents, [regardless of the source of the data].
+
+// Thus forcing modularity and reuse of web components.
+
+//grapefruit is for data which can changes within the page (url).
+//data which is page specific [one to one mapped with the component] Is handled by 'component' and baked inot the template.
+
+
+/******** grapefruit is a model [helper] class- its output is data for the components****
 
 /it takes dynamic inputs
 /** $_SESSIONreturn $csrf_token;
@@ -17,8 +27,7 @@
 //gf is the  'one simple pipe' for getting data into a view template.
 
 /*** and produces data segments that are used by the components
-// eg header
-// eg nav_title
+
 
 //a database data segment
 // main component eg - from db
@@ -52,7 +61,6 @@ function __construct ()
 {
   $this->session('domain');  // load session - default session is the name of the subdomain.
   $this->setAuthenticationState();  //sets authentication state;
-  $this->setPageRefresh('0');
   $this->authTarget();
   $this->env = 1;
   include_once(BASE.'/.gf_env.php');   //configuration file for website, no secrets kept here! Allow each website on one host to be different.
@@ -159,10 +167,19 @@ function getAuthenticationName()
   }
 }
 
-function getAuthenticationId()
+function getOAuthId()
 {
-  if (isset ($_SESSION['authentication_id']) ){
-    return $_SESSION['authentication_id'];
+  if (isset ($_SESSION['oauth_id']) ){
+    return $_SESSION['oauth_id'];
+      } else {
+    return false;
+  }
+}
+
+function getUserId()
+{
+  if (isset ($_SESSION['user_id']) ){
+    return $_SESSION['user_id'];
       } else {
     return false;
   }
@@ -182,14 +199,7 @@ if ($this->is_public() ){
 //End authentication segment
 
 
-//head segments - simplify by loading into a single segment.
-function setPageRefresh($refresh = 0){
-  $this->pageRefresh = $refresh;
-}
 
-function getPageRefresh(){
-  return $this->pageRefresh;
-}
 
 // forms functions
 
@@ -298,6 +308,8 @@ function pdo_connect($credentials)
 return $pdo;
 }//end pdo_connect
 
+
+
 //see https://phpdelusions.net/pdo/pdo_wrapper
 function pdo($db_alias, $sql, $args = NULL)
 {
@@ -311,6 +323,8 @@ function pdo($db_alias, $sql, $args = NULL)
     return $stmt;
 }
 
+
+//to be deprecated use procedural in pdo_helper instead.
 function wherePDO($w) //see /pnl/invoice for usage example
 {
   foreach ($w AS $placeholder  => $param){
@@ -331,7 +345,10 @@ function wherePDO($w) //see /pnl/invoice for usage example
 return $whereString;
 }
 
+
+//method not normally necessary. Only where do not want to simplify where to a 2 dim array.
 function argsPDO($w){ //see /pnl/invoice for usage example
+  $output=array();
   foreach ($w AS $k  => $param){
   {
       $output[$k] = $param['v'];

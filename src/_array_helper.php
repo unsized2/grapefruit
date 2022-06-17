@@ -21,19 +21,21 @@ function filterArray ($record, $filterKeys=array() )
 }
 
 
-function arr2str($array, $separator=', ', $quotes=false)
+function arr2str($array, $separator=', ', $q='', $pre='')
 {
+/*
 	if ($quotes == false){
 		$q = '';} else{
-			$q ="'";
+			$q ="$quotes";
 		}
+*/
 
 	$list='';
 	foreach ($array AS $k => $v){
 		if (empty($list)){
-			$list = $q.$v.$q;
+			$list = $q.$pre.$v.$q;
 		}else{
-			$list = $list.$separator.$q.$v.$q;
+			$list = $list.$separator.$q.$pre.$v.$q;
 		}
 	}
 	return $list;
