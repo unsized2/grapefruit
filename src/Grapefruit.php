@@ -53,17 +53,16 @@ require_once('_internationalisation.php');
 class Grapefruit
 {
 //public $svg_symbols=array();
-
 public $navTitle='';
 public $csrf_state = [];
 
 function __construct ()
 {
+  //$this->env = 1;  // used to prevent direct access to .gf_env.php and .gf_sign_in.php
+  //include_once(BASE.'/.gf_env.php');   //configuration file  just CREDENTIALS move to _env?    for website, no secrets kept here! Allow each website on one host to be different.
   $this->session('domain');  // load session - default session is the name of the subdomain.
   $this->setAuthenticationState();  //sets authentication state;
   $this->authTarget();
-  $this->env = 1;
-  include_once(BASE.'/.gf_env.php');   //configuration file for website, no secrets kept here! Allow each website on one host to be different.
   }
 
 //save arrays of data for use in templates
@@ -136,9 +135,14 @@ function setAuthenticationState()
 {
 if ( (isset ($_SESSION['authenticated'])) &&  $_SESSION['authenticated'] == 1){
   $this->is_authenticated = true;
+  $auth['first_name'] = $this->getAuthenticationName();
+  $auth['OAuthId'] = $this->getOAuthId();
+  $this->setSegment('auth', $auth);
+
   return true;
   }
 $this->is_authenticated = false;
+//$this->sign_in(); //get parameters for the oauth sign in options.
 return false;
 }
 
@@ -146,6 +150,8 @@ function is_authenticated()
 {
   if ($this->is_authenticated ){
     return true;
+  } else {
+    $this->sign_in();
   }
 return false;
 }
@@ -199,10 +205,7 @@ if ($this->is_public() ){
 //End authentication segment
 
 
-
-
 // forms functions
-
 function formSubmitted($form_name){
   //echo 'form submitted function: - ';
   $token_name= $form_name.'_token';
@@ -225,7 +228,6 @@ $token_expire=$form_name.'_expiry';
 }
 
 function expectedCSRF($form_name){
-
   $token_name= $form_name.'_token';
   if (isset ($_SESSION[$token_name])){
     return $_SESSION[$token_name];
